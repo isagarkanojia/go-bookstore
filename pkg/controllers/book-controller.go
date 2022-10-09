@@ -13,101 +13,100 @@ import (
 	"github.com/isagarkanojia/go-bookstore/pkg/utils"
 )
 
- var NewBook models.Book
+var NewBook models.Book
 
- func GetBooks(w http.ResponseWriter, r* http.Request){
-	Books:=models.GetAllBooks()
-	
-	res,_:=json.Marshal(Books)
+func GetBooks(w http.ResponseWriter, r *http.Request) {
+	Books := models.GetAllBooks()
 
-	w.Header().Set("Content-Type","application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
- }
+	res, _ := json.Marshal(Books)
 
-
-func GetBookById(w http.ResponseWriter, r* http.Request){
-		vars:= mux.Vars(r)
-		bookId:=vars["bookId"]
-		ID, err:=strconv.ParseInt(bookId,0,0)
-
-		if err!=nil{
-			fmt.Println("error while parsing")
-		}
-
-		book,_:=models.GetBookById(ID)
-		
-		res,_:=json.Marshal(book)
-	
-		w.Header().Set("Content-Type","application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(res)
- }
-
- func CreateBooks(w http.ResponseWriter, r* http.Request){
-	NewBook:=&models.Book{}
-	utils.ParseBody(r,NewBook)
-
-	book:= NewBook.CreateBook()
-
-	res,_ := json.Marshal(book)
-
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
-func DeleteBook(w http.ResponseWriter, r* http.Request){
-		vars:= mux.Vars(r)
-		bookId:=vars["bookId"]
-		ID, err :=strconv.ParseInt(bookId,0,0)
 
-		if(err!=nil){
-			fmt.Println("error while parsing")
-		}
+func GetBookById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
 
-		book := models.DeleteBook(ID)
-
-		res,_ := json.Marshal(book)
-
-		w.Header().Set("Content-Type","application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(res)
-
-
-}
-
-func UpdateBook(w http.ResponseWriter, r* http.Request){
- 	var updateBook =&models.Book{}
-	utils.ParseBody(r, updateBook)
-
-	vars:= mux.Vars(r)
-	bookId:=vars["bookId"]
-	ID, err:=strconv.ParseInt(bookId,0,0)
-
-	if(err!=nil){
+	if err != nil {
 		fmt.Println("error while parsing")
 	}
 
-	book, db :=models.GetBookById(ID)
+	book, _ := models.GetBookById(ID)
 
-	if updateBook.Name!=""{
-		 book.Name= updateBook.Name
+	res, _ := json.Marshal(book)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func CreateBooks(w http.ResponseWriter, r *http.Request) {
+	NewBook := &models.Book{}
+	utils.ParseBody(r, NewBook)
+
+	fmt.Println(NewBook)
+
+	book := NewBook.CreateBook()
+
+	res, _ := json.Marshal(book)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+func DeleteBook(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
+
+	if err != nil {
+		fmt.Println("error while parsing")
 	}
 
-	if updateBook.Author!=""{
-		book.Author= updateBook.Author
+	book := models.DeleteBook(ID)
+
+	res, _ := json.Marshal(book)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+
+}
+
+func UpdateBook(w http.ResponseWriter, r *http.Request) {
+	var updateBook = &models.Book{}
+	utils.ParseBody(r, updateBook)
+
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
+
+	if err != nil {
+		fmt.Println("error while parsing")
 	}
 
-	if updateBook.Publication!=""{
-		book.Publication= updateBook.Publication
+	book, db := models.GetBookById(ID)
+
+	if updateBook.Name != "" {
+		book.Name = updateBook.Name
 	}
-	
+
+	if updateBook.Author != "" {
+		book.Author = updateBook.Author
+	}
+
+	if updateBook.Publication != "" {
+		book.Publication = updateBook.Publication
+	}
 
 	db.Save(&book)
 
-	res,_ := json.Marshal(book)
+	res, _ := json.Marshal(book)
 
-	w.Header().Set("Content-Type","application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }

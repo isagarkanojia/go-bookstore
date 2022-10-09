@@ -8,12 +8,12 @@ import (
 	"github.com/isagarkanojia/go-bookstore/pkg/routes"
 )
 
-func main(){
-	r:=mux.NewRouter()
+func main() {
+	r := mux.NewRouter()
 
 	routes.RegisterBookStoreRoutes(r)
 
-	http.Handle("/",r)
+	http.Handle("/", r)
 
-	log.Fatal(http.ListenAndServe(":8082",r))
+	log.Fatal(http.ListenAndServe(":8082", r))
 }
