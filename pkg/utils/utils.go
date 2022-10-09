@@ -3,13 +3,18 @@ package utils
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func ParseBody(r *http.Request, x interface{}) {
-	if body, err := ioutil.ReadAll(r.Body); err != nil {
-		if err := json.Unmarshal(body, x); err != nil {
-			return
-		}
+	defer r.Body.Close()
+
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		log.Fatalln(err)
 	}
+
+	json.Unmarshal(body, x)
 }
