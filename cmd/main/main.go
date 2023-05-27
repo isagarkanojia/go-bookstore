@@ -13,6 +13,8 @@ func main() {
 
 	routes.RegisterBookStoreRoutes(r)
 
+	log.Print("Server is up!")
+
 	http.Handle("/", r)
 
 	log.Fatal(http.ListenAndServe(":8082", r))
