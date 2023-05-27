@@ -11,9 +11,9 @@ var (
 
 func Connect() {
 
-	dbURL := "postgres://sagar:postgres@localhost:5432/bookstore"
+	dsn := "host=localhost user=sagar password=sagar dbname=bookstore port=5432 sslmode=disable TimeZone=Asia/Kolkata"
 
-	d, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	d, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic(err)
